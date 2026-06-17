@@ -8,32 +8,7 @@ take/return domain dataclasses (defined in billing_engine/models/).
    The signatures, docstrings, and the LedgerRepository's append-only
    guarantee are already in place — do not change them.
 
-Beginner map (Day 2):
-  1) CustomerRepository: add, get, find_by_email, list_all
-  2) PlanRepository: add, get, list_all
-  3) PlanTierRepository: add, list_for_plan
-  4) DiscountRepository: add, get_by_code
-  5) SubscriptionRepository: add, get, list_all, get_due_for_billing
-  6) UsageRecordRepository: add, sum_for_period
-  7) InvoiceRepository: add, get
-  8) InvoiceLineItemRepository: add, list_for_invoice
 
-Skip on Day 2 (read-only for now):
-  - SubscriptionRepository.update_period / update_status / update_plan
-  - InvoiceRepository.count_for_subscription / mark_paid / mark_failed / set_pdf_path
-  - LedgerRepository and PaymentAttemptRepository
-
-Conventions:
-  - Always use parameterized queries (`?` placeholders) — NEVER f-string SQL.
-  - Money values are persisted as TEXT using `money.to_storage()`.
-  - Dates are persisted as ISO strings (`date.isoformat()`).
-
-New layering (beginner-friendly):
-  - Raw SQL lives in `billing_engine/db/queries.py`.
-  - Repository methods call those query helpers.
-  - Your Day 2 focus is:
-      1) Convert domain -> storage values before helper call
-      2) Convert rows -> domain dataclasses after helper call
 """
 
 from __future__ import annotations
