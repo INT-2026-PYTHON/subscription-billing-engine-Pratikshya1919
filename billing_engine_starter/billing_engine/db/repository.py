@@ -520,7 +520,7 @@ class InvoiceLineItemRepository:
                 id=row["id"],
                 invoice_id=row["invoice_id"],
                 description=row["description"],
-                amount=Money(row["amount"],"USD"),
+                amount=Money(row["amount"],"INR"),
                 kind=LineItemKind(row["kind"])
             ) 
             for row in rows
@@ -598,7 +598,7 @@ class LedgerRepository:
                 id=row["id"],
                 invoice_id=row["invoice_id"],
                 customer_id=row["customer_id"],
-                amount=Money(row["amount"], "USD"), 
+                amount=Money(row["amount"], "INR"), 
                 direction=LedgerDirection(row["direction"]),
                 reason=row["reason"],
                 created_at=datetime.fromisoformat(row["created_at"]) if row["created_at"] else None
