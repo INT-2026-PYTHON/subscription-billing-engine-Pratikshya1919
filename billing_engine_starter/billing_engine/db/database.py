@@ -31,11 +31,20 @@ class Database:
         conn.execute("PRAGMA foreign_keys = ON;")
         return conn
 
-    def init_schema(self) -> None:
+    '''def init_schema(self) -> None:
         """Create all tables (idempotent — uses CREATE TABLE IF NOT EXISTS)."""
         sql = SCHEMA_PATH.read_text(encoding="utf-8")
         with self.connect() as conn:
+            conn.executescript(sql)'''
+    
+    def init_schema(self) -> None:
+        """Create all tables (idempotent - uses CREATE TABLE IF NOT EXISTS)."""
+        sql = SCHEMA_PATH.read_text(encoding="utf-8")
+        conn = self.connect()
+        try:
             conn.executescript(sql)
+        finally:
+            conn.close()  # This ensures it closes even if an error occurs
 
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
@@ -54,3 +63,8 @@ class Database:
             raise
         finally:
             conn.close()
+    def close(self) -> None:
+        """Close the database connection."""
+        # In this implementation, we don't maintain a persistent connection,
+        # so there's nothing to close. This method is provided for API consistency.
+        pass
