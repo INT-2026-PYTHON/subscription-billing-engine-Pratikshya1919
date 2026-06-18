@@ -113,11 +113,10 @@ class BillingCycle:
                     id=None,
                     invoice_id=saved_invoice.id,
                     customer_id=sub.customer_id,
-                    #amount=Money(
-                        #str(saved_invoice.total.amount),
-                        #plan.currency,
-                    #),
-                    amount=saved_invoice.total,
+                    amount=Money(
+                        str(saved_invoice.total.amount),
+                        plan.currency,
+                    ),
                     direction=LedgerDirection.DEBIT,
                     reason=f"Invoice #{saved_invoice.id}",
                     created_at=datetime.now(UTC),

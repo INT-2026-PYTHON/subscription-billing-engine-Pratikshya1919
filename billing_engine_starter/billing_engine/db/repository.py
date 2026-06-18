@@ -346,6 +346,17 @@ class SubscriptionRepository:
         with self.db.transaction() as conn:
             q.update_subscription_plan(conn, subscription_id, new_plan_id)
 
+
+    def update_plan(self, subscription_id: int, new_plan_id: int) -> None:
+        self.db.execute(
+            """
+            UPDATE subscriptions
+            SET plan_id = ?
+            WHERE id = ?
+            """,
+            (new_plan_id, subscription_id),
+        )
+
 # ============================================================
 # USAGE
 # ============================================================
@@ -469,16 +480,19 @@ class InvoiceRepository:
     
 
     def mark_failed(self, invoice_id: int) -> None:
-        # TODO Day 4.
-        # Hint: q.update_invoice_status(..., "FAILED")
-         raise NotImplementedError("Day 4: implement InvoiceRepository.mark_failed")
-
+        with self.db.transaction() as conn:
+            q.update_invoice_status(
+                conn,
+                invoice_id,
+                InvoiceStatus.FAILED.value,
+            )
     def set_pdf_path(self, invoice_id: int, path: str) -> None:
-        # TODO Day 4.
-        # Hint: q.update_invoice_pdf_path(...)
-        raise NotImplementedError("Day 4: implement InvoiceRepository.set_pdf_path")
-
-
+        with self.db.transaction() as conn:
+            q.update_invoice_pdf_path(
+                conn,
+                invoice_id,
+                path,
+            )
 class InvoiceLineItemRepository:
     """Persistence boundary for invoice detail rows.
 
